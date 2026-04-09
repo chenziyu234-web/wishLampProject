@@ -6,7 +6,8 @@ import type { WishStats } from '@/api/wishlamp/instance/types';
 const stats = ref<WishStats>({
   totalInstances: 0,
   activeInstances: 0,
-  totalProducts: 0
+  totalProducts: 0,
+  totalEntries: 0,
 });
 const loading = ref(true);
 
@@ -28,7 +29,7 @@ onMounted(() => {
 <template>
   <div class="p-4">
     <el-row :gutter="20" v-loading="loading">
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover">
           <div class="stat-card">
             <div class="stat-value text-blue-600">{{ stats.totalProducts }}</div>
@@ -36,7 +37,7 @@ onMounted(() => {
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover">
           <div class="stat-card">
             <div class="stat-value text-green-600">{{ stats.totalInstances }}</div>
@@ -44,11 +45,19 @@ onMounted(() => {
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <el-card shadow="hover">
           <div class="stat-card">
             <div class="stat-value text-orange-500">{{ stats.activeInstances }}</div>
             <div class="stat-label">进行中活动</div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover">
+          <div class="stat-card">
+            <div class="stat-value text-purple-600">{{ stats.totalEntries }}</div>
+            <div class="stat-label">祝福参与总数</div>
           </div>
         </el-card>
       </el-col>

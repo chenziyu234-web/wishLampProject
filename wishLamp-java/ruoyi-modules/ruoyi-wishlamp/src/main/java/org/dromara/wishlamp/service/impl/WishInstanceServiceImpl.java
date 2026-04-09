@@ -12,6 +12,7 @@ import org.dromara.wishlamp.domain.WishInstance;
 import org.dromara.wishlamp.domain.WishProduct;
 import org.dromara.wishlamp.domain.bo.WishInstanceBo;
 import org.dromara.wishlamp.domain.vo.WishInstanceVo;
+import org.dromara.wishlamp.mapper.WishEntryMapper;
 import org.dromara.wishlamp.mapper.WishInstanceMapper;
 import org.dromara.wishlamp.mapper.WishProductMapper;
 import org.dromara.wishlamp.service.IWishInstanceService;
@@ -30,6 +31,7 @@ public class WishInstanceServiceImpl implements IWishInstanceService {
 
     private final WishInstanceMapper baseMapper;
     private final WishProductMapper productMapper;
+    private final WishEntryMapper entryMapper;
 
     @Override
     public TableDataInfo<WishInstanceVo> queryPageList(WishInstanceBo bo, PageQuery pageQuery) {
@@ -87,6 +89,7 @@ public class WishInstanceServiceImpl implements IWishInstanceService {
         stats.put("activeInstances", baseMapper.selectCount(
             Wrappers.lambdaQuery(WishInstance.class).eq(WishInstance::getStatus, "ACTIVE")));
         stats.put("totalProducts", productMapper.selectCount(null));
+        stats.put("totalEntries", entryMapper.selectCount(null));
         return stats;
     }
 

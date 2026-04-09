@@ -30,4 +30,5 @@ export interface WishStats {
   totalInstances: number;
   activeInstances: number;
   totalProducts: number;
+  totalEntries: number;
 }

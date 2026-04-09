@@ -101,3 +101,37 @@ INSERT INTO sys_dict_data VALUES (410, '000000', 1, '草稿',   'DRAFT',  'wish_
 INSERT INTO sys_dict_data VALUES (411, '000000', 2, '进行中', 'ACTIVE', 'wish_instance_status', '', 'success', 'N', 103, 1, SYSDATE(), NULL, NULL, '');
 INSERT INTO sys_dict_data VALUES (412, '000000', 3, '已暂停', 'PAUSED', 'wish_instance_status', '', 'warning', 'N', 103, 1, SYSDATE(), NULL, NULL, '');
 INSERT INTO sys_dict_data VALUES (413, '000000', 4, '已结束', 'ENDED',  'wish_instance_status', '', 'danger',  'N', 103, 1, SYSDATE(), NULL, NULL, '');
+
+-- ----------------------------
+-- 祝福参与记录表 (租户隔离)
+-- ----------------------------
+DROP TABLE IF EXISTS wish_entry;
+CREATE TABLE wish_entry (
+    entry_id          BIGINT(20)   NOT NULL              COMMENT '记录ID',
+    tenant_id         VARCHAR(20)  NOT NULL              COMMENT '租户编号',
+    instance_id       BIGINT(20)   NOT NULL              COMMENT '活动实例ID',
+    participant_name  VARCHAR(50)  DEFAULT NULL          COMMENT '参与者姓名',
+    to_name           VARCHAR(50)  DEFAULT NULL          COMMENT '祝福对象',
+    message           VARCHAR(500) DEFAULT NULL          COMMENT '祝福语内容',
+    card_style        VARCHAR(20)  DEFAULT 'default'     COMMENT '卡片样式',
+    ip_address        VARCHAR(64)  DEFAULT NULL          COMMENT '参与者IP',
+    create_time       DATETIME     DEFAULT NULL          COMMENT '参与时间',
+    PRIMARY KEY (entry_id)
+) ENGINE=InnoDB COMMENT='祝福参与记录';
+
+-- ----------------------------
+-- 初始化-端午祝福卡产品
+-- ----------------------------
+INSERT INTO wish_product VALUES (3, '端午祝福卡', 'duanwu-blessing', 'BLESSING', '端午节主题祝福卡活动，用户填写祝福语生成精美电子祝福卡，可下载分享', NULL, 1, 103, 1, SYSDATE(), 1, SYSDATE());
+
+-- ----------------------------
+-- 菜单 SQL — 祝福记录
+-- ----------------------------
+
+-- 二级菜单: 祝福记录
+INSERT INTO sys_menu VALUES (5030, '祝福记录', 5000, 4, 'entry', 'wishlamp/entry/index', '', 1, 0, 'C', '0', '0', 'wishlamp:entry:list', 'message', 103, 1, SYSDATE(), NULL, NULL, '祝福参与记录管理');
+
+-- 祝福记录按钮
+INSERT INTO sys_menu VALUES (5031, '记录查询', 5030, 1, '#', '', '', 1, 0, 'F', '0', '0', 'wishlamp:entry:query',  '#', 103, 1, SYSDATE(), NULL, NULL, '');
+INSERT INTO sys_menu VALUES (5032, '记录删除', 5030, 2, '#', '', '', 1, 0, 'F', '0', '0', 'wishlamp:entry:remove', '#', 103, 1, SYSDATE(), NULL, NULL, '');
+INSERT INTO sys_menu VALUES (5033, '记录导出', 5030, 3, '#', '', '', 1, 0, 'F', '0', '0', 'wishlamp:entry:export', '#', 103, 1, SYSDATE(), NULL, NULL, '');
